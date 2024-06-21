@@ -1,1 +1,42 @@
 -- SQL Syntax
+-- Select Column for Analytical Table from 3 Raw Tables
+SELECT
+  t.transaction_id,
+  t.date,
+  t.branch_id,
+  k.branch_name,
+  k.kota,
+  k.provinsi,
+  k.rating as rating_cabang,
+  t.customer_name,
+  p.product_id,
+  p.product_name,
+  t.price as actual_price,
+  t.discount_percentage,
+  t.price * (1-discount_percentage) as nett_sales,
+  CASE
+    WHEN t.price <= 50000 THEN "laba 10%"
+    WHEN t.price between 50001 and 100000 THEN "laba 15%"
+    WHEN t.price between 100001 and 300000 THEN "laba 20%"
+    WHEN t.price between 300001 and 500000 THEN "laba 25%"
+    WHEN t.price >500000 THEN "laba 30%"
+    ELSE "unspecified"
+  END as persentase_gross_laba,
+  CASE
+    WHEN t.price <= 50000 THEN t.price * 0.1
+    WHEN t.price between 50001 and 100000 THEN t.price * 0.15
+    WHEN t.price between 100001 and 300000 THEN t.price * 0.2
+    WHEN t.price between 300001 and 500000 THEN t.price * 0.25
+    WHEN t.price >500000 THEN t.price * 0.3
+  END as nett_profit,
+  t.rating as rating_transaction
+FROM kimia_farma.kf_final_transaction as t
+LEFT JOIN kimia_farma.kf_kantor_cabang as k
+ON t.branch_id = k.branch_id
+LEFT JOIN kimia_farma.kf_product as p
+ON t.product_id = p.product_id
+ORDER BY t.date desc
+
+-- Creating Aggregate Table for Dashboarding
+
+
