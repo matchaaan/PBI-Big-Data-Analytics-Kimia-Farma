@@ -28,10 +28,9 @@ The columns contatined in the analytical table are:
 - nett_sales
 - nett_profit
 - rating_transaksi
-  
+
 <details>
   <summary> Clink to View Query </summary>
-    <br>
   
 ```sql
 CREATE TABLE kimia_farma.kf_analytics AS(
@@ -75,8 +74,6 @@ ORDER BY t.date desc, k.provinsi, k.kota, t.customer_name
 );
 ```
 
-<details>
-  
 ### Create Report
 Dashboard report created in the Looker Studio
 
