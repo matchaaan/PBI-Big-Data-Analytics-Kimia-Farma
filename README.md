@@ -1,35 +1,83 @@
-# PBI-Big-Data-Analytics-Kimia-Farma
-This repository contains syntax codes to create analytical tables for Project Based Internship in Big Data Analytics held by Kimia Farma x Rakamin
-PBI_KimiaFarma
-Analysis of Kimia Farma's Business Performance Year 2020-2023
+# PBI - Big Data Analytics @Kimia Farma
+Analysis of Kimia Farma's Business Performance (2020-2023)
+## Challenge
+Final Project as a Big Data Analytics Intern is to evaluate Kimia Farma's business performance within 2020-2023 periods. Below is the challenge steps to finish the projects:
+### 1. Importing Dataset to BigQuery
+Dataset consists the following tables:
+- kf_final_transaction
+- kf_inventory
+- kf_kantor_cabang
+- kf_product
+  
+### 2. Creating Analytical Table
+Here we create analytical table though Joining pre-provided tables into a new analytical table in oder to making dashboard reports.
+The columns contatined in the analytical table are:
+- transaction_id
+- date
+- branch_id
+- branch_name
+- kota
+- provinsi
+- rating_cabang
+- customer_name
+- product_id
+- product_name
+- actual_price
+- discount_percentage
+- persentase_gross_laba
+- nett_sales
+- nett_profit
+- rating_transaksi
+  
+<details>
+  <summary> Clink to View Query </summary>
+    <br>
+  
+```sql
+CREATE TABLE kimia_farma.kf_analytics AS(
+SELECT
+  t.transaction_id,
+  t.date,
+  t.branch_id,
+  k.branch_name,
+  k.kota,
+  k.provinsi,
+  k.rating as rating_cabang,
+  t.customer_name,
+  p.product_id,
+  p.product_name,
+  p.price as actual_price,
+  t.discount_percentage,
+  t.price * (1-discount_percentage) as nett_sales,
+  CASE
+    WHEN p.price <= 50000 THEN "10%"
+    WHEN p.price BETWEEN 50001 and 100000 THEN "15%"
+    WHEN p.price BETWEEN 100001 and 300000 THEN "20%"
+    WHEN p.price BETWEEN 300001 and 500000 THEN "25%"
+    ELSE "30%"
+  END as persentase_gross_laba,
+  t.price * (1-t.discount_percentage) *
+    CASE
+      WHEN p.price <= 50000 THEN 0.1
+      WHEN p.price BETWEEN 50001 and 100000 THEN 0.15
+      WHEN p.price BETWEEN 100001 and 300000 THEN 0.2
+      WHEN p.price BETWEEN 300001 and 500000 THEN 0.25
+      ELSE 0.3
+    END as nett_profit,
+  t.rating as rating_transaction
 
-Challenge
-One of the main projects as a Big Data Analytics Intern at Kimia Farma is to evaluate Kimia Farma's business performance from 2020 to 2023. Here are the steps of the project:
+FROM kimia_farma.kf_final_transaction as t
+LEFT JOIN kimia_farma.kf_kantor_cabang as k
+  ON t.branch_id = k.branch_id
+LEFT JOIN kimia_farma.kf_product as p
+  ON t.product_id = p.product_id
+ORDER BY t.date desc, k.provinsi, k.kota, t.customer_name
+);
+```
 
-1. Importing Dataset to PostgreSQL
-Dataset
-The provided dataset consists of the following tables:
+<details>
+  
+### Create Report
+Dashboard report created in the Looker Studio
 
-kf_final_transaction
-kf_inventory
-kf_kantor_cabang
-kf_product
-2. Make Analysis Table
-Here are the columns contained in the table:
 
-transaction_id:transaction id code,
-date: transaction date,
-branch_id: Kimia Farma branch id code,
-branch_name: Kimia Farma branch name,
-kota: Kimia Farma branch city,
-provinsi: Kimia Farma branch province,
-rating_cabang: consumer ratings of Kimia Farma branches,
-customer_name: name of the customer who made a transaction,
-product_id: medicine product code,
-product_name: medicine name,
-actual_price: medicine price,
-discount_percentage: percentage discount given on medicine,
-persentase_gross_laba: percentage of profit that should be received from the medicine with some conditions,
-nett_sales: the price after discount,
-nett_profit: profit earned by Kimia Farma,
-rating_transaksi: consumer rating of the transaction made.
