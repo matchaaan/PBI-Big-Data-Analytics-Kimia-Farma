@@ -48,7 +48,7 @@ SELECT
   p.product_name,
   p.price as actual_price,
   t.discount_percentage,
-  t.price * (1-discount_percentage) as nett_sales,
+  t.price * (1-t.discount_percentage) as nett_sales,
   CASE
     WHEN p.price <= 50000 THEN "10%"
     WHEN p.price BETWEEN 50001 and 100000 THEN "15%"
