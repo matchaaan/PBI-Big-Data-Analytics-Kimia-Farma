@@ -73,6 +73,8 @@ LEFT JOIN kimia_farma.kf_product as p
 ORDER BY t.date desc, k.provinsi, k.kota, t.customer_name
 );
 ```
+</details>
+
 
 ### Create Report
 Dashboard report created in the Looker Studio
