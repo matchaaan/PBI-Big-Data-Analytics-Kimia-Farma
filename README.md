@@ -76,7 +76,11 @@ ORDER BY t.date desc, k.provinsi, k.kota, t.customer_name
 </details>
 
 
-### Create Report
+### 3. Creating Report
 Dashboard report created in the Looker Studio
+<details>
+  <summary>Clink to View Link </summary>
+  
+</details>
 
 
