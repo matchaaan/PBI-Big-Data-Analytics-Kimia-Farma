@@ -80,7 +80,7 @@ ORDER BY t.date desc, k.provinsi, k.kota, t.customer_name
 Dashboard report created in the Looker Studio
 <details>
   <summary>Clink to View Link </summary>
-  
+  https://lookerstudio.google.com/reporting/de1ff1d6-7487-4b29-a3c5-3f50a79ca9df
 </details>
 
 
