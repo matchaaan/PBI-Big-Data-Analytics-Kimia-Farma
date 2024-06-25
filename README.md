@@ -63,7 +63,7 @@ SELECT
       WHEN p.price BETWEEN 300001 and 500000 THEN 0.25
       ELSE 0.3
     END as nett_profit,
-  t.rating as rating_transaction
+  t.rating as rating_transaksi
 
 FROM kimia_farma.kf_final_transaction as t
 LEFT JOIN kimia_farma.kf_kantor_cabang as k
